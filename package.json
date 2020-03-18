@@ -1,0 +1,62 @@
+{
+  "name": "ng-i18n",
+  "license": "MIT",
+  "version": "0.0.1",
+  "scripts": {
+    "ng": "ng",
+    "test": "ng test --coverage",
+    "lint": "ng lint",
+    "build": "ng build",
+    "compodoc": "compodoc -p projects/ng-i18n/tsconfig.lib.json --theme material --output docs"
+  },
+  "private": false,
+  "dependencies": {
+    "@angular/common": "^9.0.5",
+    "@angular/compiler": "^9.0.5",
+    "@angular/core": "^9.0.5",
+    "@angular/platform-browser": "^9.0.5",
+    "@angular/platform-browser-dynamic": "^9.0.5",
+    "messageformat": "^2.3.0",
+    "rxjs": "^6.5.3",
+    "tslib": "^1.11.1",
+    "zone.js": "~0.10.2"
+  },
+  "devDependencies": {
+    "@angular-builders/jest": "^8.3.2",
+    "@angular-devkit/build-angular": "^0.900.5",
+    "@angular-devkit/build-ng-packagr": "^0.900.5",
+    "@angular/cli": "^9.0.5",
+    "@angular/compiler-cli": "^9.0.5",
+    "@angular/language-service": "^9.0.5",
+    "@compodoc/compodoc": "^1.1.11",
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.12.29",
+    "codelyzer": "^5.1.2",
+    "commitizen": "^4.0.3",
+    "coveralls": "^3.0.9",
+    "cz-conventional-changelog": "^3.1.0",
+    "husky": "^4.2.3",
+    "jest": "^24.9.0",
+    "jest-html-reporter": "^2.8.0",
+    "ng-packagr": "^9.0.2",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1",
+    "ts-jest": "^24.3.0",
+    "ts-node": "~7.0.0",
+    "tslint": "^5.15.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "~3.7.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
+      "pre-commit": "./node_modules/pretty-quick/bin/pretty-quick.js --staged && ng lint && ng test",
+      "pre-push": "ng build"
+    }
+  }
+}
