@@ -755,7 +755,7 @@ import { Translations } from &#x27;./translations&#x27;
  * This service is at the core of the package. It programmatically performs all operations
  * related to translations: adding and removing of cultures, defines current culture,
  * translate strings.
- * 
+ *
  * This is used by all other components of this package.
  */
 @Injectable({
@@ -777,7 +777,7 @@ export class TranslateService {
    * Adds a new culture to the list of available translations. At present the tranlsations
    * are loaded at initialization time. This is temporary as in the future translations
    * are required to be loaded from an HTTP or FS souce.
-   * 
+   *
    * @param culture the culture to add
    * @param translations the culture&#x27;s translations
    */
@@ -788,9 +788,9 @@ export class TranslateService {
 
   /**
    * Removes a given culture from the list of available cultures.
-   * 
+   *
    * @param culture the culture to remove
-   * 
+   *
    * @returns &#x60;true&#x60; if the culture has been removed, &#x60;false&#x60; if the culture was not present
    */
   public removeCulture(culture: Culture): boolean {
@@ -820,7 +820,7 @@ export class TranslateService {
 
   /**
    * Sets the current culture.
-   * 
+   *
    * @param culture the new culture
    */
   public setCulture(culture: Culture) {
@@ -831,7 +831,7 @@ export class TranslateService {
   /**
    * Creates a translated string observable. It will change its value when
    * either the selected language, or the parameters, change.
-   * 
+   *
    * @param key the key to translate
    * @param parameters the parameters to use in translating the string
    */
