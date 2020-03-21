@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { ReplaySubject, Observable, of, combineLatest } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { map, flatMap } from 'rxjs/operators'
 import { Culture } from './culture'
 import { Translations } from './translations'
 
@@ -14,8 +14,6 @@ export class TranslateService {
   private availableTranslationsSubject = new ReplaySubject<
     Map<Culture, Translations>
   >(1)
-
-  constructor() {}
 
   public addCulture(culture: Culture, translations: Translations) {
     this.availableTranslations.set(culture, translations)
@@ -31,8 +29,10 @@ export class TranslateService {
     }
   }
 
-  public getAvailableCultures(): Observable<Map<Culture, Translations>> {
-    return this.availableTranslationsSubject.asObservable()
+  public getAvailableCultures(): Observable<IterableIterator<Culture>> {
+    return this.availableTranslationsSubject.pipe(
+      map(translation => translation.keys())
+    )
   }
 
   public getCulture(): Observable<Culture> {
@@ -48,13 +48,16 @@ export class TranslateService {
     key: string,
     parameters: Observable<Map<string, string>> = of(null)
   ): Observable<string> {
-    return combineLatest([parameters, this.translationsSubject]).pipe(
-      map(([params, translations]) => {
+    return combineLatest([
+      parameters,
+      this.translationsSubject.pipe(flatMap(t => t.translations)),
+    ]).pipe(
+      map(([params, translations]): string => {
         let format = ''
         params.forEach((value, name) => {
           format = format + name + ': ' + value + ', '
         })
-        return translations.translations.get(key) + ' [' + format + ']'
+        return translations.get(key) + ' [' + format + ']'
       })
     )
   }

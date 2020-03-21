@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing'
 
 import { TranslateService } from './translate.service'
-import { BehaviorSubject, of, ReplaySubject } from 'rxjs'
+import { of, ReplaySubject } from 'rxjs'
 import { Culture } from './culture'
 import { Translations } from './translations'
 
@@ -30,7 +30,7 @@ describe('TranslateService', () => {
     } as Culture
     const translations = {
       culture: americanCulture,
-      translations: english,
+      translations: of(english),
     } as Translations
     service.addCulture(americanCulture, translations)
     service.setCulture(americanCulture)
@@ -42,10 +42,11 @@ describe('TranslateService', () => {
     paramSubject.next(params)
     service
       .translate('TEST_TRANSLATION', paramSubject.asObservable())
-      .subscribe(value => {
-        expect(value).toEqual(
+      .subscribe((value: string) => {
+        expect(value).toEqual<string>(
           'There are two parameters: {KEY_1} and {KEY_2} [KEY_1: First parameter, KEY_2: Second parameter, ]'
         )
+        service.removeCulture(americanCulture)
         done()
       })
   })
