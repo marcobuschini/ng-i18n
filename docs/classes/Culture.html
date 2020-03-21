@@ -64,6 +64,13 @@
             <code>projects/ng-i18n/src/lib/culture.ts</code>
         </p>
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Represent a culture in the package. A culture is defined by a code, and a name.</p>
+
+            </p>
 
 
 
@@ -128,10 +135,17 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="2" class="link-to-prism">projects/ng-i18n/src/lib/culture.ts:2</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">projects/ng-i18n/src/lib/culture.ts:9</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>The code is an ISO 639-1 language code follower by an underscore (<code>_</code>) followed by
+an ISO 3166-1 alpha-2 code. For example <code>en_US</code> or <code>it_IT</code>.</p>
+</div>
+                    </td>
+                </tr>
 
             </tbody>
         </table>
@@ -156,10 +170,17 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="3" class="link-to-prism">projects/ng-i18n/src/lib/culture.ts:3</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">projects/ng-i18n/src/lib/culture.ts:14</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>The name of the culture in its own culture. For example <code>English (United States)</code>
+or <code>Italiano (Italia)</code>.</p>
+</div>
+                    </td>
+                </tr>
 
             </tbody>
         </table>
@@ -176,7 +197,15 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export class Culture {
+  /**
+   * The code is an ISO 639-1 language code follower by an underscore (&#x60;_&#x60;) followed by
+   * an ISO 3166-1 alpha-2 code. For example &#x60;en_US&#x60; or &#x60;it_IT&#x60;.
+   */
   public isoCode: string
+  /**
+   * The name of the culture in its own culture. For example &#x60;English (United States)&#x60;
+   * or &#x60;Italiano (Italia)&#x60;.
+   */
   public name: string
 }
 </code></pre>
