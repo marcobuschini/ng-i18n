@@ -845,10 +845,10 @@ export class TranslateService {
     ]).pipe(
       map(([params, translations]): string &#x3D;&gt; {
         let format &#x3D; &#x27;&#x27;
-        params.forEach((value, name) &#x3D;&gt; {
+        params?.forEach((value, name) &#x3D;&gt; {
           format &#x3D; format + name + &#x27;: &#x27; + value + &#x27;, &#x27;
         })
-        return translations.get(key) + &#x27; [&#x27; + format + &#x27;]&#x27;
+        return translations.get(key) + (params ? &#x27; [&#x27; + format + &#x27;]&#x27; : &#x27;&#x27;)
       })
     )
   }

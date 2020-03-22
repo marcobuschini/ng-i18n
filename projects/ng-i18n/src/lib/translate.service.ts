@@ -98,10 +98,10 @@ export class TranslateService {
     ]).pipe(
       map(([params, translations]): string => {
         let format = ''
-        params.forEach((value, name) => {
+        params?.forEach((value, name) => {
           format = format + name + ': ' + value + ', '
         })
-        return translations.get(key) + ' [' + format + ']'
+        return translations.get(key) + (params ? ' [' + format + ']' : '')
       })
     )
   }
