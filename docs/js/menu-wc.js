@@ -58,30 +58,15 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         <ul class="links collapse " ${ isNormalMode ? 'id="modules-links"' : 'id="xs-modules-links"' }>
                             <li class="link">
                                 <a href="modules/NgI18nModule.html" data-type="entity-link">NgI18nModule</a>
-                                <li class="chapter inner">
-                                    <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                        'data-target="#directives-links-module-NgI18nModule-89709e0e5112b7bf21e58973964ed9e2"' : 'data-target="#xs-directives-links-module-NgI18nModule-89709e0e5112b7bf21e58973964ed9e2"' }>
-                                        <span class="icon ion-md-code-working"></span>
-                                        <span>Directives</span>
-                                        <span class="icon ion-ios-arrow-down"></span>
-                                    </div>
-                                    <ul class="links collapse" ${ isNormalMode ? 'id="directives-links-module-NgI18nModule-89709e0e5112b7bf21e58973964ed9e2"' :
-                                        'id="xs-directives-links-module-NgI18nModule-89709e0e5112b7bf21e58973964ed9e2"' }>
-                                        <li class="link">
-                                            <a href="directives/TranslateDirective.html"
-                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules">TranslateDirective</a>
-                                        </li>
-                                    </ul>
-                                </li>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#pipes-links-module-NgI18nModule-89709e0e5112b7bf21e58973964ed9e2"' : 'data-target="#xs-pipes-links-module-NgI18nModule-89709e0e5112b7bf21e58973964ed9e2"' }>
+                                            'data-target="#pipes-links-module-NgI18nModule-006e6da624066fe4fe88deb9283b661f"' : 'data-target="#xs-pipes-links-module-NgI18nModule-006e6da624066fe4fe88deb9283b661f"' }>
                                             <span class="icon ion-md-add"></span>
                                             <span>Pipes</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="pipes-links-module-NgI18nModule-89709e0e5112b7bf21e58973964ed9e2"' :
-                                            'id="xs-pipes-links-module-NgI18nModule-89709e0e5112b7bf21e58973964ed9e2"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="pipes-links-module-NgI18nModule-006e6da624066fe4fe88deb9283b661f"' :
+                                            'id="xs-pipes-links-module-NgI18nModule-006e6da624066fe4fe88deb9283b661f"' }>
                                             <li class="link">
                                                 <a href="pipes/TranslatePipe.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">TranslatePipe</a>
