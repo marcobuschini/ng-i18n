@@ -87,6 +87,8 @@ export class TranslateService {
    *
    * @param key the key to translate
    * @param parameters the parameters to use in translating the string
+   *
+   * TODO: https://phrase.com/blog/posts/guide-to-the-icu-message-format/
    */
   public translate(
     key: string,
@@ -97,11 +99,12 @@ export class TranslateService {
       this.translationsSubject.pipe(flatMap(t => t.translations)),
     ]).pipe(
       map(([params, translations]): string => {
-        let format = ''
-        params?.forEach((value, name) => {
-          format = format + name + ': ' + value + ', '
+        let pattern = translations.get(key)
+        params?.forEach((name, value) => {
+          const re = new RegExp('{' + value + '}', 'g')
+          pattern = pattern.replace(re, name)
         })
-        return translations.get(key) + (params ? ' [' + format + ']' : '')
+        return pattern
       })
     )
   }
