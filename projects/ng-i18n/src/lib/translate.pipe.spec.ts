@@ -12,6 +12,30 @@ describe('TranslatePipe', () => {
   let service: TranslateService
   let async: AsyncPipe
 
+  function strMapToObj(strMap): object {
+    const obj = Object.create(null)
+    for (const [k, v] of strMap) {
+      obj[k] = v
+    }
+    return obj
+  }
+
+  function objToStrMap(obj): Map<string, string> {
+    const strMap = new Map()
+    for (const k of Object.keys(obj)) {
+      strMap.set(k, obj[k])
+    }
+    return strMap
+  }
+
+  function strMapToJson(strMap): string {
+    return JSON.stringify(strMapToObj(strMap))
+  }
+
+  function jsonToStrMap(jsonStr): Map<string, string> {
+    return objToStrMap(JSON.parse(jsonStr))
+  }
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AsyncPipe, TranslateService, ChangeDetectorRef],
@@ -26,16 +50,18 @@ describe('TranslatePipe', () => {
   })
 
   it('should load translations and translate a string', () => {
-    const english = new Map<string, string>()
-    english.set(
-      'TEST_TRANSLATION',
-      'There are two parameters: {KEY_1} and {KEY_2}'
+    const english = jsonToStrMap(
+      '{\
+      "TEST_TRANSLATION_PARAMS": "There are two parameters: {KEY_1} and {KEY_2}",\
+      "TEST_TRANSLATION": "There are no parameters"\
+    }'
     )
 
     const americanCulture = {
-      isoCode: 'en_US',
+      isoCode: 'en-US',
       name: 'English (United States)',
     } as Culture
+
     const translations = {
       culture: americanCulture,
       translations: of(english),
@@ -50,9 +76,7 @@ describe('TranslatePipe', () => {
     paramSubject.next(params)
     expect(
       pipe.transform('TEST_TRANSLATION', paramSubject.asObservable())
-    ).toEqual<string>(
-      'There are two parameters: {KEY_1} and {KEY_2} [KEY_1: First parameter, KEY_2: Second parameter, ]'
-    )
+    ).toEqual<string>('There are no parameters')
     service.removeCulture(americanCulture)
   })
 })
