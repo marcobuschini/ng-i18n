@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform, ChangeDetectorRef } from '@angular/core'
 import { TranslateService } from './translate.service'
-import { Observable } from 'rxjs'
+import { Observable, of } from 'rxjs'
 import { AsyncPipe } from '@angular/common'
 
 /**
@@ -21,7 +21,10 @@ export class TranslatePipe implements PipeTransform {
    * @param value the translation key
    * @param args the translation key parameters map
    */
-  transform(value: string, args: Observable<Map<string, string>>): string {
+  transform(
+    value: string,
+    args: Observable<Map<string, string>> = of(null)
+  ): string {
     return this.asyncPipe.transform(this.service.translate(value, args))
   }
 }

@@ -1,50 +1,15 @@
 import { TestBed } from '@angular/core/testing'
 
 import { TranslateService } from './translate.service'
-import { of, ReplaySubject } from 'rxjs'
+import { of, BehaviorSubject } from 'rxjs'
 import { Culture } from './culture'
 import { Translations } from './translations'
 
 describe('TranslateService', () => {
-  function strMapToObj(strMap): object {
-    const obj = Object.create(null)
-    for (const [k, v] of strMap) {
-      obj[k] = v
-    }
-    return obj
-  }
-
-  function objToStrMap(obj): Map<string, string> {
-    const strMap = new Map()
-    for (const k of Object.keys(obj)) {
-      strMap.set(k, obj[k])
-    }
-    return strMap
-  }
-
-  function strMapToJson(strMap): string {
-    return JSON.stringify(strMapToObj(strMap))
-  }
-
-  function jsonToStrMap(jsonStr): Map<string, string> {
-    return objToStrMap(JSON.parse(jsonStr))
-  }
-
   let service: TranslateService
 
-  const english = jsonToStrMap(
-    '{\
-    "TEST_TRANSLATION_PARAMS": "There are two parameters: {KEY_1} and {KEY_2}",\
-    "TEST_TRANSLATION": "There are no parameters"\
-  }'
-  )
-
-  const italian = jsonToStrMap(
-    '{\
-    "TEST_TRANSLATION_PARAMS": "Ci sono due parametri: {KEY_1} e {KEY_2}",\
-    "TEST_TRANSLATION": "Non ci sono parametri"\
-  }'
-  )
+  const EN_US = require('../test/assets/en_US.js')
+  const IT_IT = require('../test/assets/it_IT.js')
 
   const americanCulture = {
     isoCode: 'en-US',
@@ -58,17 +23,28 @@ describe('TranslateService', () => {
 
   const americanTranslations = {
     culture: americanCulture,
-    translations: of(english),
+    translations: of(EN_US),
   } as Translations
 
   const italianTranslations = {
     culture: italianCulture,
-    translations: of(italian),
+    translations: of(IT_IT),
   } as Translations
 
   beforeEach(() => {
     TestBed.configureTestingModule({})
     service = TestBed.inject(TranslateService)
+  })
+
+  it('should translate text with imported functions', () => {
+    const params = new Map<string, string>()
+    params.set('KEY_1', 'First parameter')
+    params.set('KEY_2', 'Second parameter')
+    const newParams = []
+    params.forEach((value, key) => (newParams[key] = value))
+    expect(EN_US.TEST_TRANSLATION_PARAMS(newParams)).toEqual(
+      'There are two parameters: First parameter and Second parameter'
+    )
   })
 
   it('should create an instance', () => {
@@ -92,10 +68,9 @@ describe('TranslateService', () => {
     const params = new Map<string, string>()
     params.set('KEY_1', 'First parameter')
     params.set('KEY_2', 'Second parameter')
-    const paramSubject = new ReplaySubject<Map<string, string>>(1)
-    paramSubject.next(params)
+    const paramSubject = new BehaviorSubject<Map<string, string>>(params)
     service
-      .translate('TEST_TRANSLATION_PARAMS', paramSubject.asObservable())
+      .translate('TEST_TRANSLATION_PARAMS', paramSubject)
       .subscribe((value: string) => {
         expect(value).toEqual<string>(
           'There are two parameters: First parameter and Second parameter'
@@ -112,15 +87,14 @@ describe('TranslateService', () => {
     service.setCulture(italianCulture)
 
     const params = new Map<string, string>()
-    params.set('KEY_1', 'First parameter')
-    params.set('KEY_2', 'Second parameter')
-    const paramSubject = new ReplaySubject<Map<string, string>>(1)
-    paramSubject.next(params)
+    params.set('KEY_1', 'Primo parametro')
+    params.set('KEY_2', 'Secondo parametro')
+    const paramSubject = new BehaviorSubject<Map<string, string>>(params)
     service
       .translate('TEST_TRANSLATION_PARAMS', paramSubject.asObservable())
       .subscribe((value: string) => {
         expect(value).toEqual<string>(
-          'Ci sono due parametri: First parameter e Second parameter'
+          'Ci sono due parametri: Primo parametro e Secondo parametro'
         )
         expect(service.removeCulture(americanCulture)).toEqual(true)
         expect(service.removeCulture(americanCulture)).toEqual(false)
@@ -128,6 +102,21 @@ describe('TranslateService', () => {
         expect(service.removeCulture(italianCulture)).toEqual(false)
         done()
       })
+  })
+
+  it('should translate a string without parameters (en-US)', done => {
+    service.addCulture(americanCulture, americanTranslations)
+    service.addCulture(italianCulture, italianTranslations)
+    service.setCulture(americanCulture)
+
+    service.translate('TEST_TRANSLATION').subscribe((value: string) => {
+      expect(value).toEqual<string>('There are no parameters')
+      expect(service.removeCulture(americanCulture)).toEqual(true)
+      expect(service.removeCulture(americanCulture)).toEqual(false)
+      expect(service.removeCulture(italianCulture)).toEqual(true)
+      expect(service.removeCulture(italianCulture)).toEqual(false)
+      done()
+    })
   })
 
   it('should translate a string without parameters (it-IT)', done => {

@@ -8,5 +8,7 @@ export class Translations {
   /** The culture these translation strings refer to. */
   public culture: Culture
   /** The translation strings for the culture. */
-  public translations: Observable<Map<string, string>>
+  public translations: Observable<
+    Map<string, (d: Map<string, string>) => string>
+  >
 }

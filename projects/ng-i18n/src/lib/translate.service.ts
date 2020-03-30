@@ -92,19 +92,20 @@ export class TranslateService {
    */
   public translate(
     key: string,
-    parameters: Observable<Map<string, string>> = of(null)
+    parameters?: Observable<Map<string, string>>
   ): Observable<string> {
     return combineLatest([
-      parameters,
       this.translationsSubject.pipe(flatMap(t => t.translations)),
+      parameters ? parameters : of(new Map<string, string>()),
     ]).pipe(
-      map(([params, translations]): string => {
-        let pattern = translations.get(key)
-        params?.forEach((name, value) => {
-          const re = new RegExp('{' + value + '}', 'g')
-          pattern = pattern.replace(re, name)
-        })
-        return pattern
+      map(([translations, params]): string => {
+        const newParams = []
+        params.forEach((v, k) => (newParams[k] = v))
+        if (translations && translations[key]) {
+          return translations[key](newParams)
+        } else {
+          return '[MISSING: ' + key + ']'
+        }
       })
     )
   }
