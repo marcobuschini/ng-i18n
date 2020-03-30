@@ -204,7 +204,9 @@ export class Translations {
   /** The culture these translation strings refer to. */
   public culture: Culture
   /** The translation strings for the culture. */
-  public translations: Observable&lt;Map&lt;string, string&gt;&gt;
+  public translations: Observable&lt;
+    Map&lt;string, (d: Map&lt;string, string&gt;) &#x3D;&gt; string&gt;
+  &gt;
 }
 </code></pre>
     </div>

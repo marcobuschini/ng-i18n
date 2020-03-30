@@ -514,15 +514,15 @@ are required to be loaded from an HTTP or FS souce.</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>translate(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, parameters: Observable<Map<string, string>>)</code>
+                    <code>translate(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, parameters?: Observable<Map<string, string>>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="91"
-                            class="link-to-prism">projects/ng-i18n/src/lib/translate.service.ts:91</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="93"
+                            class="link-to-prism">projects/ng-i18n/src/lib/translate.service.ts:93</a></div>
                 </td>
             </tr>
 
@@ -541,7 +541,6 @@ either the selected language, or the parameters, change.</p>
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
-                                    <td>Default value</td>
                                     <td>Description</td>
                                 </tr>
                             </thead>
@@ -556,8 +555,6 @@ either the selected language, or the parameters, change.</p>
                                         No
                                     </td>
 
-                                    <td>
-                                    </td>
 
                                     <td>
                                         <p>the key to translate</p>
@@ -571,15 +568,13 @@ either the selected language, or the parameters, change.</p>
                                     </td>
 
                                     <td>
-                                        No
+                                        Yes
                                     </td>
 
-                                    <td>
-                                        <code>of(null)</code>
-                                    </td>
 
                                     <td>
                                         <p>the parameters to use in translating the string</p>
+<p>TODO: <a href="https://phrase.com/blog/posts/guide-to-the-icu-message-format/">https://phrase.com/blog/posts/guide-to-the-icu-message-format/</a></p>
 
                                     </td>
                                 </tr>
@@ -834,21 +829,25 @@ export class TranslateService {
    *
    * @param key the key to translate
    * @param parameters the parameters to use in translating the string
+   *
+   * TODO: https://phrase.com/blog/posts/guide-to-the-icu-message-format/
    */
   public translate(
     key: string,
-    parameters: Observable&lt;Map&lt;string, string&gt;&gt; &#x3D; of(null)
+    parameters?: Observable&lt;Map&lt;string, string&gt;&gt;
   ): Observable&lt;string&gt; {
     return combineLatest([
-      parameters,
       this.translationsSubject.pipe(flatMap(t &#x3D;&gt; t.translations)),
+      parameters ? parameters : of(new Map&lt;string, string&gt;()),
     ]).pipe(
-      map(([params, translations]): string &#x3D;&gt; {
-        let format &#x3D; &#x27;&#x27;
-        params?.forEach((value, name) &#x3D;&gt; {
-          format &#x3D; format + name + &#x27;: &#x27; + value + &#x27;, &#x27;
-        })
-        return translations.get(key) + (params ? &#x27; [&#x27; + format + &#x27;]&#x27; : &#x27;&#x27;)
+      map(([translations, params]): string &#x3D;&gt; {
+        const newParams &#x3D; []
+        params.forEach((v, k) &#x3D;&gt; (newParams[k] &#x3D; v))
+        if (translations &amp;&amp; translations[key]) {
+          return translations[key](newParams)
+        } else {
+          return &#x27;[MISSING: &#x27; + key + &#x27;]&#x27;
+        }
       })
     )
   }
