@@ -165,7 +165,7 @@
                                     </td>
 
                                     <td>
-                                        <code>of(null)</code>
+                                        <code>of(new Map&lt;string, string&gt;())</code>
                                     </td>
 
                                     <td>
@@ -220,7 +220,7 @@ export class TranslatePipe implements PipeTransform {
    */
   transform(
     value: string,
-    args: Observable&lt;Map&lt;string, string&gt;&gt; &#x3D; of(null)
+    args: Observable&lt;Map&lt;string, string&gt;&gt; &#x3D; of(new Map&lt;string, string&gt;())
   ): string {
     return this.asyncPipe.transform(this.service.translate(value, args))
   }

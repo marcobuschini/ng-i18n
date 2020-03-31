@@ -27,7 +27,26 @@ describe('TranslatePipe', () => {
     expect(pipe).toBeTruthy()
   })
 
-  it('should load translations and translate a string', () => {
+  it('should load translations and translate a string without parameters', () => {
+    const americanCulture = {
+      isoCode: 'en-US',
+      name: 'English (United States)',
+    } as Culture
+
+    const translations = {
+      culture: americanCulture,
+      translations: of(EN_US),
+    } as Translations
+    service.addCulture(americanCulture, translations)
+    service.setCulture(americanCulture)
+
+    expect(pipe.transform('TEST_TRANSLATION')).toEqual<string>(
+      'There are no parameters'
+    )
+    service.removeCulture(americanCulture)
+  })
+
+  it('should load translations and translate a string with parameters', () => {
     const americanCulture = {
       isoCode: 'en-US',
       name: 'English (United States)',
@@ -46,8 +65,10 @@ describe('TranslatePipe', () => {
     const paramSubject = new ReplaySubject<Map<string, string>>(1)
     paramSubject.next(params)
     expect(
-      pipe.transform('TEST_TRANSLATION', paramSubject.asObservable())
-    ).toEqual<string>('There are no parameters')
+      pipe.transform('TEST_TRANSLATION_PARAMS', paramSubject.asObservable())
+    ).toEqual<string>(
+      'There are two parameters: First parameter and Second parameter'
+    )
     service.removeCulture(americanCulture)
   })
 })

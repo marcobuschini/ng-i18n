@@ -23,7 +23,7 @@ export class TranslatePipe implements PipeTransform {
    */
   transform(
     value: string,
-    args: Observable<Map<string, string>> = of(null)
+    args: Observable<Map<string, string>> = of(new Map<string, string>())
   ): string {
     return this.asyncPipe.transform(this.service.translate(value, args))
   }
