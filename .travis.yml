@@ -25,4 +25,4 @@ script:
   - ng test --coverage --coverageReporters=text-lcov | node node_modules/coveralls/bin/coveralls.js
 
 after_script:
-  - ./cc-test-reporter after-build --exit-code -t lcov $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter after-build -t lcov --exit-code $TRAVIS_TEST_RESULT
