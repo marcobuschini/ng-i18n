@@ -133,4 +133,15 @@ describe('TranslateService', () => {
       done()
     })
   })
+
+  it('should translate a string with a missing translation', done => {
+    service.addCulture(italianCulture, italianTranslations)
+    service.setCulture(italianCulture)
+
+    service.translate('TEST_TRANSLATION_MISSING').subscribe((value: string) => {
+      expect(value).toEqual<string>('[MISSING: TEST_TRANSLATION_MISSING]')
+      expect(service.removeCulture(italianCulture)).toEqual(true)
+      done()
+    })
+  })
 })
