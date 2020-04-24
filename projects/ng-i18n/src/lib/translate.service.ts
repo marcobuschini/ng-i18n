@@ -99,10 +99,8 @@ export class TranslateService {
       parameters ? parameters : of(new Map<string, string>()),
     ]).pipe(
       map(([translations, params]): string => {
-        const newParams = []
-        params.forEach((v, k) => (newParams[k] = v))
         if (translations && translations[key]) {
-          return translations[key](newParams)
+          return translations[key](params)
         } else {
           return '[MISSING: ' + key + ']'
         }

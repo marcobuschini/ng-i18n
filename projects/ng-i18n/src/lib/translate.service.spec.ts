@@ -61,7 +61,7 @@ describe('TranslateService', () => {
     ])
   })
 
-  it('should translate a string with parameters (en-US)', done => {
+  it('should translate a string with parameters (en-US)', () => {
     service.addCulture(americanCulture, americanTranslations)
     service.setCulture(americanCulture)
 
@@ -69,19 +69,16 @@ describe('TranslateService', () => {
     params.set('KEY_1', 'First parameter')
     params.set('KEY_2', 'Second parameter')
     const paramSubject = new BehaviorSubject<Map<string, string>>(params)
-    service
-      .translate('TEST_TRANSLATION_PARAMS', paramSubject)
-      .subscribe((value: string) => {
-        expect(value).toEqual<string>(
-          'There are two parameters: First parameter and Second parameter'
-        )
-        expect(service.removeCulture(americanCulture)).toEqual(true)
-        expect(service.removeCulture(americanCulture)).toEqual(false)
-        done()
-      })
+    expect(
+      service.translate('TEST_TRANSLATION_PARAMS', paramSubject).toPromise()
+    ).resolves.toEqual<string>(
+      'There are two parameters: First parameter and Second parameter'
+    )
+    expect(service.removeCulture(americanCulture)).toEqual(true)
+    expect(service.removeCulture(americanCulture)).toEqual(false)
   })
 
-  it('should translate a string with parameters (it-IT)', done => {
+  it('should translate a string with parameters (it-IT)', () => {
     service.addCulture(americanCulture, americanTranslations)
     service.addCulture(italianCulture, italianTranslations)
     service.setCulture(italianCulture)
@@ -90,58 +87,54 @@ describe('TranslateService', () => {
     params.set('KEY_1', 'Primo parametro')
     params.set('KEY_2', 'Secondo parametro')
     const paramSubject = new BehaviorSubject<Map<string, string>>(params)
-    service
-      .translate('TEST_TRANSLATION_PARAMS', paramSubject.asObservable())
-      .subscribe((value: string) => {
-        expect(value).toEqual<string>(
-          'Ci sono due parametri: Primo parametro e Secondo parametro'
-        )
-        expect(service.removeCulture(americanCulture)).toEqual(true)
-        expect(service.removeCulture(americanCulture)).toEqual(false)
-        expect(service.removeCulture(italianCulture)).toEqual(true)
-        expect(service.removeCulture(italianCulture)).toEqual(false)
-        done()
-      })
+    expect(
+      service
+        .translate('TEST_TRANSLATION_PARAMS', paramSubject.asObservable())
+        .toPromise()
+    ).resolves.toEqual<string>(
+      'Ci sono due parametri: Primo parametro e Secondo parametro'
+    )
+    expect(service.removeCulture(americanCulture)).toEqual(true)
+    expect(service.removeCulture(americanCulture)).toEqual(false)
+    expect(service.removeCulture(italianCulture)).toEqual(true)
+    expect(service.removeCulture(italianCulture)).toEqual(false)
   })
 
-  it('should translate a string without parameters (en-US)', done => {
+  it('should translate a string without parameters (en-US)', () => {
     service.addCulture(americanCulture, americanTranslations)
     service.addCulture(italianCulture, italianTranslations)
     service.setCulture(americanCulture)
 
-    service.translate('TEST_TRANSLATION').subscribe((value: string) => {
-      expect(value).toEqual<string>('There are no parameters')
-      expect(service.removeCulture(americanCulture)).toEqual(true)
-      expect(service.removeCulture(americanCulture)).toEqual(false)
-      expect(service.removeCulture(italianCulture)).toEqual(true)
-      expect(service.removeCulture(italianCulture)).toEqual(false)
-      done()
-    })
+    expect(service.translate('TEST_TRANSLATION').toPromise()).resolves.toEqual<
+      string
+    >('There are no parameters')
+    expect(service.removeCulture(americanCulture)).toEqual(true)
+    expect(service.removeCulture(americanCulture)).toEqual(false)
+    expect(service.removeCulture(italianCulture)).toEqual(true)
+    expect(service.removeCulture(italianCulture)).toEqual(false)
   })
 
-  it('should translate a string without parameters (it-IT)', done => {
+  it('should translate a string without parameters (it-IT)', () => {
     service.addCulture(americanCulture, americanTranslations)
     service.addCulture(italianCulture, italianTranslations)
     service.setCulture(italianCulture)
 
-    service.translate('TEST_TRANSLATION').subscribe((value: string) => {
-      expect(value).toEqual<string>('Non ci sono parametri')
-      expect(service.removeCulture(americanCulture)).toEqual(true)
-      expect(service.removeCulture(americanCulture)).toEqual(false)
-      expect(service.removeCulture(italianCulture)).toEqual(true)
-      expect(service.removeCulture(italianCulture)).toEqual(false)
-      done()
-    })
+    expect(service.translate('TEST_TRANSLATION').toPromise()).resolves.toEqual<
+      string
+    >('Non ci sono parametri')
+    expect(service.removeCulture(americanCulture)).toEqual(true)
+    expect(service.removeCulture(americanCulture)).toEqual(false)
+    expect(service.removeCulture(italianCulture)).toEqual(true)
+    expect(service.removeCulture(italianCulture)).toEqual(false)
   })
 
-  it('should translate a string with a missing translation', done => {
+  it('should translate a string with a missing translation', () => {
     service.addCulture(italianCulture, italianTranslations)
     service.setCulture(italianCulture)
 
-    service.translate('TEST_TRANSLATION_MISSING').subscribe((value: string) => {
-      expect(value).toEqual<string>('[MISSING: TEST_TRANSLATION_MISSING]')
-      expect(service.removeCulture(italianCulture)).toEqual(true)
-      done()
-    })
+    expect(
+      service.translate('TEST_TRANSLATION_MISSING').toPromise()
+    ).resolves.toEqual<string>('[MISSING: TEST_TRANSLATION_MISSING]')
+    expect(service.removeCulture(italianCulture)).toEqual(true)
   })
 })
