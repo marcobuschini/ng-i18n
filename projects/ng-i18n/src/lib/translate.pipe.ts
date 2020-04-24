@@ -1,7 +1,6 @@
-import { Pipe, PipeTransform, ChangeDetectorRef } from '@angular/core'
+import { Pipe, PipeTransform } from '@angular/core'
 import { TranslateService } from './translate.service'
 import { Observable, of } from 'rxjs'
-import { AsyncPipe } from '@angular/common'
 
 /**
  * Asynchronous pipe to translate a string with parameters.
@@ -10,10 +9,7 @@ import { AsyncPipe } from '@angular/common'
   name: 'translate',
 })
 export class TranslatePipe implements PipeTransform {
-  constructor(
-    private service: TranslateService,
-    private asyncPipe: AsyncPipe
-  ) {}
+  constructor(private service: TranslateService) {}
 
   /**
    * Actually applies the pipe generating a translated string with parameters.
@@ -24,7 +20,7 @@ export class TranslatePipe implements PipeTransform {
   transform(
     value: string,
     args: Observable<Map<string, string>> = of(new Map<string, string>())
-  ): string {
-    return this.asyncPipe.transform(this.service.translate(value, args))
+  ): Observable<string> {
+    return this.service.translate(value, args)
   }
 }

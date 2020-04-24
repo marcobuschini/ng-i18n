@@ -10,7 +10,6 @@ import { ChangeDetectorRef } from '@angular/core'
 describe('TranslatePipe', () => {
   let pipe: TranslatePipe
   let service: TranslateService
-  let async: AsyncPipe
 
   const EN_US = require('../test/assets/en_US.js')
 
@@ -19,8 +18,7 @@ describe('TranslatePipe', () => {
       providers: [AsyncPipe, TranslateService, ChangeDetectorRef],
     })
     service = TestBed.inject(TranslateService)
-    async = TestBed.inject(AsyncPipe)
-    pipe = new TranslatePipe(service, async)
+    pipe = new TranslatePipe(service)
   })
 
   it('should create an instance', () => {
@@ -40,9 +38,9 @@ describe('TranslatePipe', () => {
     service.addCulture(americanCulture, translations)
     service.setCulture(americanCulture)
 
-    expect(pipe.transform('TEST_TRANSLATION')).toEqual<string>(
-      'There are no parameters'
-    )
+    expect(pipe.transform('TEST_TRANSLATION').toPromise()).resolves.toEqual<
+      string
+    >('There are no parameters')
     service.removeCulture(americanCulture)
   })
 
@@ -65,8 +63,10 @@ describe('TranslatePipe', () => {
     const paramSubject = new ReplaySubject<Map<string, string>>(1)
     paramSubject.next(params)
     expect(
-      pipe.transform('TEST_TRANSLATION_PARAMS', paramSubject.asObservable())
-    ).toEqual<string>(
+      pipe
+        .transform('TEST_TRANSLATION_PARAMS', paramSubject.asObservable())
+        .toPromise()
+    ).resolves.toEqual<string>(
       'There are two parameters: First parameter and Second parameter'
     )
     service.removeCulture(americanCulture)
