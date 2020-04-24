@@ -841,11 +841,12 @@ export class TranslateService {
       parameters ? parameters : of(new Map&lt;string, string&gt;()),
     ]).pipe(
       map(([translations, params]): string &#x3D;&gt; {
-        const newParams &#x3D; []
-        params.forEach((v, k) &#x3D;&gt; (newParams[k] &#x3D; v))
         if (translations &amp;&amp; translations[key]) {
-          return translations[key](newParams)
+          // const func: (parm: Map&lt;string, string&gt;) &#x3D;&gt; string &#x3D; translations[key]
+          return translations[key](params)
+          // return func(params)
         } else {
+          console.log(&#x27;[MISSING: &#x27; + key + &#x27;]&#x27;)
           return &#x27;[MISSING: &#x27; + key + &#x27;]&#x27;
         }
       })
