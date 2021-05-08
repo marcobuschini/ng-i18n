@@ -38,7 +38,7 @@
     "jest": "^24.9.0",
     "jest-html-reporter": "^2.8.2",
     "messageformat-cli": "^2.1.1",
-    "ng-packagr": "^9.1.1",
+    "ng-packagr": "^10.1.1",
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
     "ts-jest": "^24.3.0",
